@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { motion } from "framer-motion";
+import AnimatedLayout from "@/components/ui/AnimatedLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
       <body
         className=''
       >
-        {children}
+        <AnimatedLayout>{children}</AnimatedLayout>
       </body>
     </html>
   );
