@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useState } from "react";
+import Loader from "@/components/ui/Loader";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,35 +15,40 @@ export default function Signup() {
     email: "",
     password: "",
   });
+  const [loader, setloader] = useState(false);
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        console.log(user);
-        const axiosres = await axios.post("/api/user/signup", user);
-        if (!axiosres){
-          toast.error("axios side error");
-          return NextResponse({ message: "axios side error" });
-        }
-        console.log(axiosres);
-        toast.success("Signup successful");
-        router.push('/login')
+      setloader(true);
+      console.log(user);
+      const axiosres = await axios.post("/api/user/signup", user);
+      if (!axiosres) {
+        toast.error("axios side error");
+        return NextResponse({ message: "axios side error" });
+      }
+      console.log(axiosres);
+      toast.success("Signup successful");
+      router.push("/login");
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
+    }
+    finally{
+      setloader(false);
     }
   };
-  return (
+  return loader ? (
+    <Loader />
+  ) : (
     <div className="relative flex h-screen w-screen items-center justify-center bg-white dark:bg-black">
       <div
         className={cn(
           "absolute inset-0",
           "[background-size:40px_40px]",
           "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
-          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
+          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]"
         )}
       />
-    
       <div className="shadow-input mx-auto z-50 sm:w-full w-[80vw] max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
           Welcome to Link Manager
@@ -89,10 +95,12 @@ export default function Signup() {
           </button>
         </form>
         <p className="text-center text-sm text-neutral-600 dark:text-neutral-300">
-          Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a>
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-500 hover:underline">
+            Login
+          </a>
         </p>
       </div>{" "}
     </div>
-    
   );
 }

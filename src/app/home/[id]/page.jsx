@@ -7,9 +7,11 @@ import React from "react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Loader from "@/components/ui/Loader";
 export default function Home() {
   const params = useParams();
   console.log(params);
+  const [loader, setloader] = useState(false);
   const [bookmark, setbookmark] = useState({
     name: "",
     url: "",
@@ -17,14 +19,21 @@ export default function Home() {
   });
 
   const getallbookmarks = async () => {
-    const axiosres = await axios.get(`/api/get-all-bookmarks/${params.id}`);
-    if (!axiosres) {
-      toast.error("axios side error");
-      return NextResponse({ message: "axios side error" });
+    try {
+      setloader(true);
+      const axiosres = await axios.get(`/api/get-all-bookmarks/${params.id}`);
+      if (!axiosres) {
+        toast.error("axios side error");
+        return NextResponse({ message: "axios side error" });
+      }
+      toast.success("Bookmarks fetched successfully");
+      console.log(axiosres);
+      setAllbookmarks(axiosres.data.allbookmarks);
+    } catch (error) {
+      console.log(error);
+    }finally {
+      setloader(false);
     }
-    toast.success("Bookmarks fetched successfully");
-    console.log(axiosres);
-    setAllbookmarks(axiosres.data.allbookmarks);
   };
   const [allbookmarks, setAllbookmarks] = useState([]);
   useEffect(() => {
@@ -32,18 +41,26 @@ export default function Home() {
     authhandler();
   }, []);
   const authhandler = async () => {
-    const axiosres = await axios.get("/api/user/auth");
-    if (!axiosres) {
-      toast.error("axios side error");
-      return NextResponse({ message: "axios side error" });
+    try {
+      setloader(true);
+      const axiosres = await axios.get("/api/user/auth");
+      if (!axiosres) {
+        toast.error("axios side error");
+        return NextResponse({ message: "axios side error" });
+      }
+      console.log(axiosres);
+      if (axiosres.data.auth === false) router.push("/login");
+      toast.success("Authenticated successfully");
+    } catch (error) {
+      console.log(error);
+    }finally {
+      setloader(false);
     }
-    console.log(axiosres);
-    if (axiosres.data.auth === false) router.push("/login");
-    toast.success("Authenticated successfully");
   };
   const router = useRouter();
   const logouthandler = async () => {
     try {
+      setloader(true);
       const axiores = await axios.get("/api/user/logout");
       if (!axiores) {
         toast.error("axios side error");
@@ -54,11 +71,14 @@ export default function Home() {
       router.push("/login");
     } catch (error) {
       console.log(error);
+    }finally {
+      setloader(false);
     }
   };
   const submithandler = async (e) => {
     e.preventDefault();
     try {
+      setloader(true);
       const axiosres = await axios.post(
         `/api/add-a-link/${params.id}`,
         bookmark
@@ -73,19 +93,30 @@ export default function Home() {
       getallbookmarks();
     } catch (error) {
       console.log(error);
+    }finally {
+      setloader(false);
     }
   };
   const deletehandler = async (id) => {
-    const axiosres = await axios.get(`/api/delete-a-bookmark/${id}`);
-    if (!axiosres) {
-      toast.error("axios side error");
-      return NextResponse({ message: "axios side error" });
+    try {
+      setloader(true);
+      const axiosres = await axios.get(`/api/delete-a-bookmark/${id}`);
+      if (!axiosres) {
+        toast.error("axios side error");
+        return NextResponse({ message: "axios side error" });
+      }
+      toast.success("Bookmark deleted successfully");
+      console.log(axiosres);
+      getallbookmarks();
+    } catch (error) {
+      console.log(error);
+    }finally {
+      setloader(false);
     }
-    toast.success("Bookmark deleted successfully");
-    console.log(axiosres);
-    getallbookmarks();
   };
-  return (
+  return loader?(
+    <Loader/>
+  ):(
     <>
       <div className="h-screen overflow-scroll overflow-x-hidden w-full bg-black  flex flex-col items-center justify-center antialiased">
         <div className=" z-50 text-white w-screen h-screen px-10 py-5 ">

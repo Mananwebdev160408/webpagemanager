@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { BottomGradient } from "@/components/ui/bottomgradient";
 import { LabelInputContainer } from "@/components/ui/labelinputconstainer";
 import axios from "axios";
+import Loader from "@/components/ui/Loader";
 import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -15,26 +16,37 @@ export default function login() {
     email: "",
     password: "",
   });
+  const [loader, setloader] = useState(false);
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const axiosres = await axios.post("/api/user/login", user);
-    if (!axiosres) {
-      toast.error("axios side error");
-      return NextResponse({ message: "axios side error" });
+    try {
+      setloader(true);
+      const axiosres = await axios.post("/api/user/login", user);
+      if (!axiosres) {
+        toast.error("axios side error");
+        return NextResponse({ message: "axios side error" });
+      }
+      toast.success("Login successful");
+      console.log(axiosres);
+      router.push(`/home/${axiosres.data.existinguser._id}`);
+    } catch (error) {
+      console.log(error);
     }
-    toast.success("Login successful");
-    console.log(axiosres);
-    router.push(`/home/${axiosres.data.existinguser._id}`);
+    finally{
+      setloader(false);
+    }
   };
-  return (
-        <div className="relative flex h-screen w-screen items-center justify-center bg-white dark:bg-black">
+  return loader?(
+    <Loader />
+  ):(
+    <div className="relative flex h-screen w-screen items-center justify-center bg-white dark:bg-black">
       <div
         className={cn(
           "absolute inset-0",
           "[background-size:40px_40px]",
           "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
-          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
+          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]"
         )}
       />
       <Toaster reverseOrder={false} position="top-center" />
