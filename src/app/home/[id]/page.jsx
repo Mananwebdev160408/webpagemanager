@@ -1,4 +1,5 @@
 "use client";
+import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { NextResponse } from "next/server";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
@@ -86,7 +87,7 @@ export default function Home() {
   };
   return (
     <>
-      <div className="h-screen w-full bg-black   relative flex flex-col items-center justify-center antialiased">
+      <div className="h-screen overflow-scroll overflow-x-hidden w-full bg-black  flex flex-col items-center justify-center antialiased">
         <div className=" z-50 text-white w-screen h-screen px-10 py-5 ">
           <Toaster position="top-center" reverseOrder={false} />
           <div className="nav flex  justify-between items-center">
@@ -100,10 +101,10 @@ export default function Home() {
           </div>
           <form
             onSubmit={submithandler}
-            className="input  my-4 flex justify-center items-center gap-5  "
+            className="input  my-4 flex sm:flex-row flex-col justify-center items-center gap-5  "
           >
             <div className="flex flex-col gap-7  ">
-              <div className="flex gap-4">
+              <div className="sm:flex-row flex flex-col gap-4">
                 <input
                   type="text"
                   className="bg-transparent border border-white px-4 py-2 rounded-lg"
@@ -137,50 +138,9 @@ export default function Home() {
             </button>
           </form>
           <div className="main  ">
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th className="p-4">Name</th>
-                  <th className="p-4">URL</th>
-                  <th className="p-4">Description</th>
-                  <th className="p-4"> </th>
-                </tr>
-              </thead>
-              <tbody>
-                {allbookmarks?.map((bookmark) => (
-                  <tr key={bookmark._id}>
-                    <td className="p-4">{bookmark.name}</td>
-                    <td className="p-4">
-                      <a href={bookmark.url} target="_blank">
-                        {bookmark.url}
-                      </a>
-                    </td>
-                    <td className="p-4">{bookmark.description}</td>
-                    <td className="p-4">
-                      <button
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer "
-                        onClick={() => deletehandler(bookmark._id)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="max-w-5xl mx-auto px-8">
+              <HoverEffect items={allbookmarks} deletehandler={deletehandler} />
+            </div>
           </div>
         </div>
         <BackgroundBeams />

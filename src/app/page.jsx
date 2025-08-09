@@ -21,12 +21,12 @@ export default function Home() {
         >
 
          
-      <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold text-center text-white relative z-2 font-sans">
-        Manage your  <ColourfulText text="Important" /> <br /> Links here
+      <h1 className="text-5xl md:text-[70px] gap-4 flex flex-col sm:text-[60px] lg:text-7xl font-bold text-center text-white relative z-2 font-sans">
+        <div className=" flex  gap-4 lg:flex-row flex-col  " >Manage your  <div><ColourfulText text="Important" /></div></div>  Links here
       </h1>
       
         </motion.div>
-        <div className=" z-50 flex gap-8 justify-center mt-10">
+        <div className=" z-50 flex gap-8 sm:flex-row flex-col justify-center mt-10">
           <button onClick={()=>router.push("/login")} className=" cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Login
           </button>
