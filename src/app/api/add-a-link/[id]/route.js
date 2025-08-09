@@ -6,7 +6,6 @@ await dbconnect();
 export async function POST(request, { params }) {
   const resolvedparams = await params;
   const { url, name, description } = await request.json();
-  console.log(url, name, description);
   
   if ([url, name, description].some((field) => field.trim() == "")) {
     return NextResponse.json({ message: "All fields are required" });

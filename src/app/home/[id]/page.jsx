@@ -10,7 +10,6 @@ import { useParams, useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
 export default function Home() {
   const params = useParams();
-  console.log(params);
   const [loader, setloader] = useState(false);
   const [bookmark, setbookmark] = useState({
     name: "",
@@ -27,7 +26,6 @@ export default function Home() {
         return NextResponse({ message: "axios side error" });
       }
       toast.success("Bookmarks fetched successfully");
-      console.log(axiosres);
       setAllbookmarks(axiosres.data.allbookmarks);
     } catch (error) {
       console.log(error);
@@ -48,7 +46,6 @@ export default function Home() {
         toast.error("axios side error");
         return NextResponse({ message: "axios side error" });
       }
-      console.log(axiosres);
       if (axiosres.data.auth === false) router.push("/login");
       toast.success("Authenticated successfully");
     } catch (error) {
@@ -67,7 +64,6 @@ export default function Home() {
         return NextResponse({ message: "axios side error" });
       }
       toast.success("Logout successful");
-      console.log(axiores);
       router.push("/login");
     } catch (error) {
       console.log(error);
@@ -88,7 +84,6 @@ export default function Home() {
         return NextResponse({ message: "axios side error" });
       }
       toast.success("Bookmark added successfully");
-      console.log(axiosres);
       setbookmark({ name: "", url: "", description: "" });
       getallbookmarks();
     } catch (error) {
@@ -106,7 +101,6 @@ export default function Home() {
         return NextResponse({ message: "axios side error" });
       }
       toast.success("Bookmark deleted successfully");
-      console.log(axiosres);
       getallbookmarks();
     } catch (error) {
       console.log(error);

@@ -28,7 +28,6 @@ export default function login() {
         return NextResponse({ message: "axios side error" });
       }
       toast.success("Login successful");
-      console.log(axiosres);
       router.push(`/home/${axiosres.data.existinguser._id}`);
     } catch (error) {
       console.log(error);

@@ -21,13 +21,11 @@ export default function Signup() {
     e.preventDefault();
     try {
       setloader(true);
-      console.log(user);
       const axiosres = await axios.post("/api/user/signup", user);
       if (!axiosres) {
         toast.error("axios side error");
         return NextResponse({ message: "axios side error" });
       }
-      console.log(axiosres);
       toast.success("Signup successful");
       router.push("/login");
     } catch (error) {
