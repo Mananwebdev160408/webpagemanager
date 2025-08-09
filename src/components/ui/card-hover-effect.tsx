@@ -38,7 +38,7 @@ export const HoverEffect = ({
                 }} />
             )}
           </AnimatePresence>
-          <Card className={undefined}>
+          <Card className={undefined}  >
             <CardTitle className={undefined} >{item.name}</CardTitle>
             <CardDescription className={undefined} >{item.description}</CardDescription>
             <CardDeletebutton deletehandler={deletehandler} bookmark={item}/>

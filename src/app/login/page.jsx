@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { BottomGradient } from "@/components/ui/bottomgradient";
 import { LabelInputContainer } from "@/components/ui/labelinputconstainer";
 import axios from "axios";
+import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { NextResponse } from "next/server";
@@ -27,7 +28,15 @@ export default function login() {
     router.push(`/home/${axiosres.data.existinguser._id}`);
   };
   return (
-    <div className=" flex h-screen items-center justify-center bg-slate-900 ">
+        <div className="relative flex h-screen w-screen items-center justify-center bg-white dark:bg-black">
+      <div
+        className={cn(
+          "absolute inset-0",
+          "[background-size:40px_40px]",
+          "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
+        )}
+      />
       <Toaster reverseOrder={false} position="top-center" />
       <div className="shadow-input mx-auto z-50 sm:w-full w-[80vw] max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
