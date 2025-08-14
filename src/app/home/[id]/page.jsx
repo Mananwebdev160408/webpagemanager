@@ -116,7 +116,7 @@ export default function Home() {
         <div className=" z-50 text-white w-screen h-screen px-10 py-5 ">
           <Toaster position="top-center" reverseOrder={false} />
           <div className="nav flex  justify-between items-center">
-            <h1 className="text-3xl font-medium">Link Manager</h1>
+            <h1 className="text-3xl font-medium">PagePilot</h1>
             <button
               onClick={logouthandler}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
